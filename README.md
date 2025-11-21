@@ -100,3 +100,14 @@ Contributions are welcome! Please open an issue or submit a pull request to sugg
 
 ## License
 This project is licensed under the MIT License.
+
+## Limitations
+
+Due to time constraints, the following features were not implemented:
+
+- **Authentication**: The API does not include any form of authentication.
+- **Middleware**: No middleware was developed for additional request/response handling.
+- **File Management**: Integration with a file storage service like S3 was not implemented.
+- **Error Handling**: Comprehensive error handling mechanisms were not implemented.
+- **Logging**: Proper logging mechanisms were not implemented.
+- **Unit Tests**: No unit tests were created to validate the functionality of the application.
