@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "drag-and-drop-be"
+version = "0.0.1"
+description = "Backend for Dataroom"
+authors = ["Yoher <yoher.obando.duarte@hotmail.com>"]
+package-mode = false
+readme = "README.md"
+
+packages = [
+    { include = "src" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+fastapi = "^0.110"
+uvicorn = {extras = ["standard"], version = "^0.30"}
+pydantic = {extras = ["dotenv"], version = "^2.7"}
+python-dotenv = "^1.0"
+psycopg = {extras = ["binary"], version = "^3.1"}
+sqlalchemy = "^2.0"
+alembic = "^1.13"
+pydantic-settings = "^2.12.0"
+python-multipart = "^0.0.20"
+
+[tool.poetry.scripts]
+dev = "start:run"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "black (>=25.11.0,<26.0.0)"
+]

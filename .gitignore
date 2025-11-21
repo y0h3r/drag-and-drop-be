@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+
+# Poetry
+poetry.lock
+
+# VSCode
+.vscode/
+
+# Alembic cache
+alembic/__pycache__/
+alembic/versions/__pycache__/
+
+# Uploads / archivos temporales
+uploads/
+
+# Docker
+*.log
+*.pid
+
+# Byte-compiled / cache
+*.pyc
+*.pyo
+*.pyd
+*.cache
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Others
+*.egg-info/
+dist/
+build/
+uploads/
