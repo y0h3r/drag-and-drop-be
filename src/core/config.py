@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = Field(..., env="POSTGRES_USER")
     POSTGRES_PASSWORD: str = Field(..., env="POSTGRES_PASSWORD")
     POSTGRES_DB: str = Field(..., env="POSTGRES_DB")
+    ENV: str = Field(..., env="ENV")
 
     class Config:
         env_file = ".env"

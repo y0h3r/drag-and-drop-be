@@ -2,8 +2,9 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
+from models import file_model
 from src.core.database import Base
-from src.models import folder, file
+from models import folder_model
 
 config = context.config
 
