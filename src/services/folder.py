@@ -1,7 +1,7 @@
 from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from fastapi import HTTPException
+from sqlalchemy.orm import selectinload
 
 from src.models.folder import Folder
 from src.schemas.folder import FolderCreate, FolderUpdate
@@ -19,12 +19,20 @@ class FolderService:
 
     @staticmethod
     async def get_folder(db: AsyncSession, folder_id: int) -> Optional[Folder]:
-        result = await db.execute(select(Folder).where(Folder.id == folder_id))
+        result = await db.execute(
+            select(Folder)
+            .options(selectinload(Folder.files), selectinload(Folder.subfolders))
+            .where(Folder.id == folder_id)
+        )
         return result.scalars().first()
 
     @staticmethod
     async def get_all_folders(db: AsyncSession):
-        result = await db.execute(select(Folder))
+        result = await db.execute(
+            select(Folder).options(
+                selectinload(Folder.files), selectinload(Folder.subfolders)
+            )
+        )
         return result.scalars().all()
 
     @staticmethod
@@ -56,14 +64,18 @@ class FolderService:
 
     @staticmethod
     async def get_folder_tree(db: AsyncSession, folder_id: int | None = None):
-        """Recursive tree builder."""
+        """Recursive tree builder with eager loading."""
         if folder_id:
             folder = await FolderService.get_folder(db, folder_id)
             if not folder:
                 return None
             folders_to_build = [folder]
         else:
-            result = await db.execute(select(Folder).where(Folder.parent_id == None))
+            result = await db.execute(
+                select(Folder)
+                .options(selectinload(Folder.files), selectinload(Folder.subfolders))
+                .where(Folder.parent_id == None)
+            )
             folders_to_build = result.scalars().all()
 
         def build_tree(f: Folder):
