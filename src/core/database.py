@@ -1,6 +1,5 @@
-# src/core/database.py
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 import ssl
 from src.core.config import settings
 
@@ -14,6 +13,8 @@ engine = create_async_engine(
     future=True,
     echo=True,
 )
+
+Base = declarative_base()
 
 AsyncSessionLocal = sessionmaker(
     bind=engine,
