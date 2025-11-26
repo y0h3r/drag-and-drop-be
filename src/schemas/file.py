@@ -22,7 +22,7 @@ class FileCreate(FileBase):
 class FileUpdate(BaseModel):
     name: Optional[str] = None
     extension: Optional[str] = None
-    folder_id: Optional[int]
+    folder_id: Optional[int] = None
 
     @field_validator("extension")
     @classmethod
