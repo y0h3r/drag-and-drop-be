@@ -12,4 +12,6 @@ RUN poetry config virtualenvs.create false \
 
 COPY . .
 
-CMD ["poetry", "run", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+RUN chmod +x /app/start.sh
+
+CMD ["bash", "/app/start.sh"]
