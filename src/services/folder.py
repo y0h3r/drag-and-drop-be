@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -21,16 +21,20 @@ class FolderService:
     async def get_folder(db: AsyncSession, folder_id: int) -> Optional[Folder]:
         result = await db.execute(
             select(Folder)
-            .options(selectinload(Folder.files), selectinload(Folder.subfolders))
+            .options(
+                selectinload(Folder.files),
+                selectinload(Folder.subfolders).selectinload(Folder.files),
+            )
             .where(Folder.id == folder_id)
         )
         return result.scalars().first()
 
     @staticmethod
-    async def get_all_folders(db: AsyncSession):
+    async def get_all_folders(db: AsyncSession) -> List[Folder]:
         result = await db.execute(
             select(Folder).options(
-                selectinload(Folder.files), selectinload(Folder.subfolders)
+                selectinload(Folder.files),
+                selectinload(Folder.subfolders).selectinload(Folder.files),
             )
         )
         return result.scalars().all()
@@ -63,20 +67,20 @@ class FolderService:
         return True
 
     @staticmethod
-    async def get_folder_tree(db: AsyncSession, folder_id: int | None = None):
-        """Recursive tree builder with eager loading."""
+    async def get_folder_tree(db: AsyncSession, folder_id: Optional[int] = None):
+        """Recursive tree builder loading everything in a single query."""
+        query = select(Folder).options(
+            selectinload(Folder.files),
+            selectinload(Folder.subfolders).selectinload(Folder.files),
+        )
+
         if folder_id:
-            folder = await FolderService.get_folder(db, folder_id)
-            if not folder:
-                return None
-            folders_to_build = [folder]
+            query = query.where(Folder.id == folder_id)
         else:
-            result = await db.execute(
-                select(Folder)
-                .options(selectinload(Folder.files), selectinload(Folder.subfolders))
-                .where(Folder.parent_id == None)
-            )
-            folders_to_build = result.scalars().all()
+            query = query.where(Folder.parent_id == None)
+
+        result = await db.execute(query)
+        folders_to_build = result.scalars().all()
 
         def build_tree(f: Folder):
             return {
