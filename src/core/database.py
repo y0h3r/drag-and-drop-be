@@ -1,25 +1,19 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
+import ssl
 from src.core.config import settings
 
-# Async engine para FastAPI
-engine = create_async_engine(settings.ASYNC_DATABASE_URL, echo=True, future=True)
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE  # Cambia según tu setup
 
-AsyncSessionLocal = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    autocommit=False,
-    autoflush=False,
-    expire_on_commit=False,
+engine = create_async_engine(
+    settings.DATABASE_URL,
+    connect_args={"ssl": ssl_context},  # <- aquí evitamos sslmode en URL
+    future=True,
+    echo=True,
 )
 
-Base = declarative_base()
-
-
-# Dependency de FastAPI
-async def get_db():
-    async with AsyncSessionLocal() as session:
-        try:
-            yield session
-        finally:
-            await session.close()
+AsyncSessionLocal = sessionmaker(
+    bind=engine, class_=AsyncSession, expire_on_commit=False
+)
