@@ -4,16 +4,19 @@ from alembic import context
 from src.core.config import settings
 from src.core.database import Base  # Importa tu Base declarativa
 
-# this is the Alembic Config object, which provides access to the values within the .ini file in use.
+# Alembic Config object
 config = context.config
 
-# Override la URL con la de nuestro settings
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
+# Usar URL síncrona para Alembic
+# Necesitas agregar esta variable en tu .env:
+# SYNC_DATABASE_URL=postgresql+psycopg://user:pass@host/db?sslmode=require
+config.set_main_option("sqlalchemy.url", settings.SYNC_DATABASE_URL)
 
-# Interpret the config file for Python logging.
+# Logging
 fileConfig(config.config_file_name)
 
-target_metadata = Base.metadata  # Metadata de tus modelos
+# Metadata de tus modelos
+target_metadata = Base.metadata
 
 
 def run_migrations_offline():
