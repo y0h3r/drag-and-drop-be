@@ -10,7 +10,6 @@ ssl_context.verify_mode = ssl.CERT_NONE
 engine = create_async_engine(
     settings.DATABASE_URL,
     connect_args={"ssl": ssl_context},
-    future=True,
     echo=True,
 )
 
