@@ -1,4 +1,8 @@
-from sqlalchemy.orm import Session
+from typing import Optional
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from fastapi import HTTPException
+
 from src.models.folder import Folder
 from src.schemas.folder import FolderCreate, FolderUpdate
 
@@ -6,59 +10,61 @@ from src.schemas.folder import FolderCreate, FolderUpdate
 class FolderService:
 
     @staticmethod
-    def create_folder(db: Session, data: FolderCreate) -> Folder:
+    async def create_folder(db: AsyncSession, data: FolderCreate) -> Folder:
         folder = Folder(name=data.name, parent_id=data.parent_id)
         db.add(folder)
-        db.commit()
-        db.refresh(folder)
+        await db.commit()
+        await db.refresh(folder)
         return folder
 
     @staticmethod
-    def get_folder(db: Session, folder_id: int) -> Folder | None:
-        return db.query(Folder).filter(Folder.id == folder_id).first()
+    async def get_folder(db: AsyncSession, folder_id: int) -> Optional[Folder]:
+        result = await db.execute(select(Folder).where(Folder.id == folder_id))
+        return result.scalars().first()
 
     @staticmethod
-    def get_all_folders(db: Session):
-        return db.query(Folder).all()
+    async def get_all_folders(db: AsyncSession):
+        result = await db.execute(select(Folder))
+        return result.scalars().all()
 
     @staticmethod
-    def update_folder(db: Session, folder_id: int, data: FolderUpdate) -> Folder | None:
-        folder = FolderService.get_folder(db, folder_id)
+    async def update_folder(
+        db: AsyncSession, folder_id: int, data: FolderUpdate
+    ) -> Optional[Folder]:
+        folder = await FolderService.get_folder(db, folder_id)
         if not folder:
             return None
 
         if data.name is not None:
             folder.name = data.name
-
         if data.parent_id is not None:
             folder.parent_id = data.parent_id
 
-        db.commit()
-        db.refresh(folder)
+        await db.commit()
+        await db.refresh(folder)
         return folder
 
     @staticmethod
-    def delete_folder(db: Session, folder_id: int) -> bool:
-        folder = FolderService.get_folder(db, folder_id)
+    async def delete_folder(db: AsyncSession, folder_id: int) -> bool:
+        folder = await FolderService.get_folder(db, folder_id)
         if not folder:
             return False
 
-        db.delete(folder)
-        db.commit()
+        await db.delete(folder)
+        await db.commit()
         return True
 
     @staticmethod
-    def get_folder_tree(db: Session, folder_id: int | None = None):
+    async def get_folder_tree(db: AsyncSession, folder_id: int | None = None):
         """Recursive tree builder."""
         if folder_id:
-            # Construye árbol desde un folder específico
-            folder = FolderService.get_folder(db, folder_id)
+            folder = await FolderService.get_folder(db, folder_id)
             if not folder:
                 return None
             folders_to_build = [folder]
         else:
-            # Construye árbol desde los folders raíz
-            folders_to_build = db.query(Folder).filter(Folder.parent_id == None).all()
+            result = await db.execute(select(Folder).where(Folder.parent_id == None))
+            folders_to_build = result.scalars().all()
 
         def build_tree(f: Folder):
             return {
