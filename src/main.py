@@ -14,6 +14,7 @@ app.include_router(file.router, prefix="/api/v1")
 
 origins = [
     "http://localhost:5173",
+    "https://drag-and-drop-fe-steel.vercel.app",
 ]
 
 app.add_middleware(
