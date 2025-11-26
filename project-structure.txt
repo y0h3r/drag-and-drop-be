@@ -1,0 +1,95 @@
+.
+├── __pycache__
+│   ├── start.cpython-313.pyc
+│   └── uvicorn.cpython-313.pyc
+├── alembic
+│   ├── __pycache__
+│   │   └── env.cpython-311.pyc
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+│       ├── __pycache__
+│       │   └── 93ab7acfc453_create_initial_tables.cpython-311.pyc
+│       └── 93ab7acfc453_create_initial_tables.py
+├── alembic.ini
+├── docker-compose.yml
+├── Dockerfile
+├── poetry.lock
+├── project-structure.txt
+├── pyproject.toml
+├── README.md
+├── src
+│   ├── __pycache__
+│   │   ├── main.cpython-311.pyc
+│   │   └── main.cpython-313.pyc
+│   ├── api
+│   │   └── v1
+│   │       ├── __pycache__
+│   │       │   ├── file.cpython-311.pyc
+│   │       │   └── folder.cpython-311.pyc
+│   │       ├── file.py
+│   │       └── folder.py
+│   ├── core
+│   │   ├── __pycache__
+│   │   │   ├── config.cpython-311.pyc
+│   │   │   └── database.cpython-311.pyc
+│   │   ├── config.py
+│   │   └── database.py
+│   ├── exceptions
+│   │   ├── __pycache__
+│   │   │   ├── file_exception_handler.cpython-311.pyc
+│   │   │   ├── file.cpython-311.pyc
+│   │   │   ├── folder_exception_handler.cpython-311.pyc
+│   │   │   └── folder.cpython-311.pyc
+│   │   ├── file_exception_handler.py
+│   │   ├── file.py
+│   │   ├── folder_exception_handler.py
+│   │   └── folder.py
+│   ├── main.py
+│   ├── models
+│   │   ├── __pycache__
+│   │   │   ├── file.cpython-311.pyc
+│   │   │   └── folder.cpython-311.pyc
+│   │   ├── file.py
+│   │   └── folder.py
+│   ├── providers
+│   │   ├── repositories
+│   │   │   ├── __pycache__
+│   │   │   │   ├── file.cpython-311.pyc
+│   │   │   │   └── folder.cpython-311.pyc
+│   │   │   ├── file.py
+│   │   │   └── folder.py
+│   │   └── services
+│   │       ├── __pycache__
+│   │       │   ├── file.cpython-311.pyc
+│   │       │   └── folder.cpython-311.pyc
+│   │       ├── file.py
+│   │       └── folder.py
+│   ├── repositories
+│   │   ├── __pycache__
+│   │   │   ├── file.cpython-311.pyc
+│   │   │   └── folder.cpython-311.pyc
+│   │   ├── file.py
+│   │   └── folder.py
+│   ├── schemas
+│   │   ├── __pycache__
+│   │   │   ├── file.cpython-311.pyc
+│   │   │   └── folder.cpython-311.pyc
+│   │   ├── file.py
+│   │   └── folder.py
+│   └── services
+│       ├── __pycache__
+│       │   ├── file.cpython-311.pyc
+│       │   └── folder.cpython-311.pyc
+│       ├── file.py
+│       └── folder.py
+├── start.py
+└── uploads
+    ├── Deiver Ortiz Gomez (1).pdf
+    ├── Documento sin título (4).pdf
+    ├── f
+    ├── test
+    └── Yoher_Obando_Duarte_-_Software_Engineer,_Full-stack_Developer.pdf
+
+29 directories, 64 files
