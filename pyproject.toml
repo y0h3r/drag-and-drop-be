@@ -23,6 +23,7 @@ pydantic-settings = "^2.12.0"
 python-multipart = "^0.0.20"
 psycopg2-binary = "^2.9.11"
 asyncpg = "^0.31.0"
+aiofiles = "^25.1.0"
 
 [tool.poetry.scripts]
 dev = "start:run"
