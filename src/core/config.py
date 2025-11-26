@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     ENV: str = Field("production", env="ENV")
     DATABASE_URL: str = Field(..., env="DATABASE_URL")  # Para Alembic (sync)
     API_PORT: int = Field(8000, env="API_PORT")
+    SYNC_DATABASE_URL: str = Field(..., env="SYNC_DATABASE_URL")  # Para Alembic (sync)
 
     class Config:
         env_file = ".env"
